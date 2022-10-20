@@ -133,6 +133,7 @@ void PatchMemoBrightnes();
 void PatchPauseScreen();
 void PatchPistonRoom();
 void PatchPreventChainsawSpawn();
+void PatchPrisonerTimer();
 void PatchPS2Flashlight();
 void PatchPS2NoiseFilter();
 void PatchRedCrossInCutscene();

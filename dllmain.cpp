@@ -548,6 +548,12 @@ void DelayedStart()
 		PatchCriware();
 	}
 
+    // Fixes "Ritual" prisoner footstep rate when playing in 60 FPS
+    if (FPSLimit == 60)
+    {
+        PatchPrisonerTimer();
+    }
+
 	// Remove the "Now loading..." message
 	switch (GameVersion)
 	{
