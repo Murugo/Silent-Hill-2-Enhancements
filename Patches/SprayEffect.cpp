@@ -66,6 +66,7 @@ __declspec(naked) void __stdcall IsSprayAllocActiveASM()
 
     LoadActive:
         mov eax, dword ptr ds : [IsSprayActive]
+        test eax, eax
     CheckActive:
         jnz ExitASM
         mov eax, 0  // Inactive
