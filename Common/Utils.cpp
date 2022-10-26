@@ -266,6 +266,11 @@ bool UpdateMemoryAddress(void *dataAddr, const void *dataBytes, size_t dataSize)
 	return true;
 }
 
+// Write pointer to memory
+bool WritePointerToMemory(void *dataAddr, const void *dataPtr) {
+    return UpdateMemoryAddress(dataAddr, &dataPtr, sizeof(DWORD*));
+}
+
 // Write a address to memory
 bool WriteAddresstoMemory(BYTE *dataAddr, const void *JMPAddr, DWORD count, BYTE command)
 {

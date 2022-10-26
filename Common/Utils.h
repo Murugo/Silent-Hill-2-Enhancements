@@ -12,6 +12,7 @@ DWORD SearchAndGetAddresses(DWORD dataAddr10, DWORD dataAddr11, DWORD dataAddrDC
 DWORD ReadSearchedAddresses(DWORD dataAddr10, DWORD dataAddr11, DWORD dataAddrDC, const BYTE *dataBytes, size_t dataSize, int ByteDelta);
 void SearchAndLogAddress(DWORD SearchAddress);
 bool UpdateMemoryAddress(void *dataAddr, const void *dataBytes, size_t dataSize);
+bool WritePointerToMemory(void *dataAddr, const void *dataBytes);
 bool WriteCalltoMemory(BYTE *dataAddr, const void *JMPAddr, DWORD count = 5);
 bool WriteJMPtoMemory(BYTE *dataAddr, const void *JMPAddr, DWORD count = 5);
 DWORD ReplaceMemoryBytes(void *dataSrc, void *dataDest, size_t size, DWORD start, DWORD distance, DWORD count = 0);

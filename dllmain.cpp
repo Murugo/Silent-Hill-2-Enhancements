@@ -495,6 +495,12 @@ void DelayedStart()
 		PatchCustomFog();
 	}
 
+    // Spray effect fix
+    if (FPSLimit == 60)
+    {
+        PatchSprayEffect();
+    }
+
 	// Update fullscreen images
 	if (FullscreenImages)
 	{

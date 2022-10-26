@@ -143,6 +143,7 @@ void PatchSaveBGImage();
 void PatchSpeakerConfigLock();
 void PatchSpecialFX();
 void PatchSpecular();
+void PatchSprayEffect();
 void PatchSFXAddr();
 void PatchSpecificSoundLoopFix();
 void PatchTexAddr();
