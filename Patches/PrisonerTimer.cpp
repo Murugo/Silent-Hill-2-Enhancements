@@ -34,9 +34,8 @@ __declspec(naked) void __stdcall PrisonerTimerResetASM()
 void PatchPrisonerTimer()
 {
     // Get Prisoner Timer Reset address
-    // TODO: Only 1.0 address is known. Find addresses for 1.1 and DC.
-    constexpr BYTE SearchBytesPrisonerTimerReset[]{ 0x89, 0x86, 0xA0, 0x00, 0x00, 0x00, 0xD9, 0x1C, 0x24, 0xE8, 0xFA, 0xA1, 0xF9, 0xFF };
-    DWORD PrisonerTimerResetAddr = SearchAndGetAddresses(0x004AE5F8, 0x0, 0x0, SearchBytesPrisonerTimerReset, sizeof(SearchBytesPrisonerTimerReset), 0x1D);
+    constexpr BYTE SearchBytesPrisonerTimerReset[]{ 0x89, 0x86, 0xA0, 0x00, 0x00, 0x00, 0xD9, 0x1C, 0x24, 0xE8 };
+    DWORD PrisonerTimerResetAddr = SearchAndGetAddresses(0x004AE5F8, 0x004AE8A8, 0x004AE168, SearchBytesPrisonerTimerReset, sizeof(SearchBytesPrisonerTimerReset), 0x1D);
     if (!PrisonerTimerResetAddr)
     {
         Logging::Log() << __FUNCTION__ << " Error: failed to find memory address!";
