@@ -495,6 +495,12 @@ void DelayedStart()
 		PatchCustomFog();
 	}
 
+	// Fix map transcribe animation speed at 60 FPS
+	if (FPSLimit == 60)
+	{
+		PatchMapTranscription();
+	}
+
 	// Update fullscreen images
 	if (FullscreenImages)
 	{

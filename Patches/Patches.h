@@ -129,6 +129,7 @@ void PatchInventoryBGMBug();
 void PatchLockScreenPosition();
 void PatchMainMenu();
 void PatchMainMenuTitlePerLang();
+void PatchMapTranscription();
 void PatchMemoBrightnes();
 void PatchPauseScreen();
 void PatchPistonRoom();
