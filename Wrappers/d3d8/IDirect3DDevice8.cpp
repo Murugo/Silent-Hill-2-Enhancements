@@ -1321,6 +1321,39 @@ HRESULT m_IDirect3DDevice8::DrawPrimitiveUP(D3DPRIMITIVETYPE PrimitiveType, UINT
 		}
 	}
 
+    // Enable PS2-style fade transition
+    if (PS2StyleFade && PrimitiveType == D3DPT_TRIANGLESTRIP && PrimitiveCount == 2 && VertexStreamZeroStride == 16 &&
+        (GetTransitionState() == 1 || GetTransitionState() == 2 || GetTransitionState() == 3 || (GetEventIndex() == 7 && LastDrawPrimitiveUPStride == 2024)))
+    {
+        // Back up alpha blend and related state
+        DWORD alphaBlend = 0, alphaBlendOp = 0, alphaSrcBlend = 0, alphaDestBlend = 0;
+        ProxyInterface->GetRenderState(D3DRS_ALPHABLENDENABLE, &alphaBlend);
+        ProxyInterface->GetRenderState(D3DRS_BLENDOP, &alphaBlendOp);
+        ProxyInterface->GetRenderState(D3DRS_SRCBLEND, &alphaSrcBlend);
+        ProxyInterface->GetRenderState(D3DRS_DESTBLEND, &alphaDestBlend);
+
+        // Apply the fade as an offset to the frame buffer color rather than a multiplier, similar to how the fade is done in the original PS2 release
+        ProxyInterface->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+        ProxyInterface->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_REVSUBTRACT);
+        ProxyInterface->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+        ProxyInterface->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+
+        DWORD texFactor = 0;
+        ProxyInterface->GetRenderState(D3DRS_TEXTUREFACTOR, &texFactor);
+        ProxyInterface->SetRenderState(D3DRS_TEXTUREFACTOR, texFactor | 0x00FFFFFF);
+
+        ProxyInterface->DrawPrimitiveUP(PrimitiveType, PrimitiveCount, pVertexStreamZeroData, VertexStreamZeroStride);
+
+        // Restore alpha blend and related state
+        ProxyInterface->SetRenderState(D3DRS_ALPHABLENDENABLE, alphaBlend);
+        ProxyInterface->SetRenderState(D3DRS_BLENDOP, alphaBlendOp);
+        ProxyInterface->SetRenderState(D3DRS_SRCBLEND, alphaSrcBlend);
+        ProxyInterface->SetRenderState(D3DRS_DESTBLEND, alphaDestBlend);
+        ProxyInterface->SetRenderState(D3DRS_TEXTUREFACTOR, texFactor);
+
+        return D3D_OK;
+    }
+
 	// Remove red cross in inventory snapshot in Hotel Employee Elevator Room
 	if (DisableRedCrossInCutScenes && HotelEmployeeElevatorRoomFlag && GetOnScreen() == 6 && PrimitiveType == D3DPT_TRIANGLESTRIP && PrimitiveCount == 2 && VertexStreamZeroStride == 24 &&
 		((CUSTOMVERTEX_DIF_TEX1*)pVertexStreamZeroData)[0].z == 0.01f && ((CUSTOMVERTEX_DIF_TEX1*)pVertexStreamZeroData)[0].rhw == 1.0f)

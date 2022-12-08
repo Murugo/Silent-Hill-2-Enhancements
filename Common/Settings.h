@@ -78,6 +78,7 @@
 	visit(PistonRoomFix, true) \
 	visit(PS2CameraSpeed, true) \
 	visit(PS2FlashlightBrightness, true) \
+    visit(PS2StyleFade, false) \
 	visit(PS2StyleNoiseFilter, true) \
 	visit(ReduceCutsceneFOV, true) \
 	visit(RemoveEffectsFlicker, true) \
@@ -201,6 +202,7 @@
 	visit(LockResolution) \
 	visit(NormalFontHeight) \
 	visit(NormalFontWidth) \
+    visit(PS2StyleFade) \
 	visit(ResX) \
 	visit(ResY) \
 	visit(SmallFontHeight) \
