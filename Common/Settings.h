@@ -139,6 +139,7 @@
 	visit(SpaceSize, 7)
 
 #define VISIT_FLOAT_SETTINGS(visit) \
+    visit(DelayedFadeIn, 0.0f) \
 	visit(fog_layer1_x1, 0.250f) \
 	visit(fog_layer1_x2, 0.250f) \
 	visit(fog_layer1_y1, 0.125f) \
@@ -174,6 +175,7 @@
 	visit(CustomFontRow) \
 	visit(CustomModFolder) \
 	visit(DisableLogging) \
+    visit(DelayedFadeIn) \
 	visit(EnableDebugOverlay) \
 	visit(EnableInfoOverlay) \
 	visit(EnableMenuTest) \

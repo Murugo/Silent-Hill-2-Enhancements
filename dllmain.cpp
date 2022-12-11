@@ -548,6 +548,12 @@ void DelayedStart()
 		PatchCriware();
 	}
 
+    // Patch delayed fade-in transition
+    if (DelayedFadeIn != 0.0f)
+    {
+        PatchDelayedFadeIn(DelayedFadeIn);
+    }
+
 	// Remove the "Now loading..." message
 	switch (GameVersion)
 	{

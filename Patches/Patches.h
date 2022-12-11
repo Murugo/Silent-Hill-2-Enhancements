@@ -119,6 +119,7 @@ void PatchCustomFog();
 void PatchCustomFonts();
 void PatchControllerTweaks();
 void PatchDrawDistance();
+void PatchDelayedFadeIn(float Seconds);
 void PatchFlashlightClockPush();
 void PatchFlashlightFlicker();
 void PatchFogParameters();
