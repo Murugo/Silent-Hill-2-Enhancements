@@ -106,10 +106,6 @@ void RunHotelWater()
 	{
 		Logging::Log() << "Setting Hotel Water Fix...";
 
-		// Hallway After Alternate Hotel Kitchen Water
-		float Value = 1.75f;
-		UpdateMemoryAddress((void*)Address1, &Value, sizeof(float));				// Water texture Z stretch/shrink
-
 		// Alternate Hotel Kitchen Water
 		Value = 100.0f;
 		UpdateMemoryAddress((void*)(Address2 + 0x00), &Value, sizeof(float));	// Water color (flashlight off) - R
