@@ -403,6 +403,14 @@ namespace
         }
     };
 
+    bool HasDisplayModeStrings()
+    {
+        if (!MsgFileAddr || !*MsgFileAddr)
+            return false;
+        const short first_msg_offs = *(const short*)*MsgFileAddr;
+        return first_msg_offs > 0xFE;
+    }
+
     class DisplayModeAdvancedOption : public Option
     {
     public:
@@ -711,7 +719,13 @@ namespace
     {
         int index = 0;
         options.push_back(std::make_unique<ScreenBrightnessAdvancedOption>(index++));
-        if (DisplayModeOption) options.push_back(std::make_unique<DisplayModeAdvancedOption>(index++));
+        if (DisplayModeOption)
+        {
+            if (HasDisplayModeStrings())
+                options.push_back(std::make_unique<DisplayModeAdvancedOption>(index++));
+            else
+                Logging::Log() << __FUNCTION__ << " Error: Display mode option is missing required strings!";
+        }
         options.push_back(std::make_unique<DisplayResolutionAdvancedOption>(index++));
         DisplayResolutionAdvancedOptionPtr = options.back().get();
 
