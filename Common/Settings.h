@@ -87,6 +87,7 @@
 	visit(ImproveStorageSupport, true) \
 	visit(IncreaseBlood, true) \
 	visit(IncreaseDrawDistance, true) \
+	visit(LabyrinthElevatorVolumeFix, true) \
 	visit(LegacyFixGPUAntiAliasing, false) \
 	visit(LightingFix, true) \
 	visit(LightingTransitionFix, true) \
@@ -255,6 +256,7 @@
 	visit(HookDirectInput) \
 	visit(HookDirectSound) \
 	visit(HookWndProc) \
+	visit(LabyrinthElevatorVolumeFix) \
 	visit(LetterSpacing) \
 	visit(LimitPerFrameFPS) \
 	visit(LoadModulesFromMemory) \
