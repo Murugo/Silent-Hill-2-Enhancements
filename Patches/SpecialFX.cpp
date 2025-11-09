@@ -35,11 +35,13 @@ float LyingFigureTunnelCutsceneValue2 = 0;
 float HotelRoom312Value1 = 0;
 float HotelRoom312Value2 = 0;
 void* FadeOutTypeAddr;
+void* EnemiesRemainingAddr;
 void *jmpCustomAddress2Addr;
 void *jmpCustomAddress3Addr;
 void *jmpMotionBlurAddr;
 void *MotionBlurDWORDAddr;
 void *callCustomMotionBlurAddr;
+void *callEnMotionBlurAddr;
 void *jmpCustomMotionBlur1Addr;
 void *jmpCustomMotionBlur2Addr;
 void *jmpCustomMotionBlur3Addr;
@@ -48,6 +50,8 @@ void *jmpCustomMotionBlur5Addr;
 void *jmpCustomMotionBlur6Addr;
 void *jmpEddieBossDeathAddr;
 void *jmpEddieBossDeathTimerAddr;
+void *jmpFleshLipsBossDeathReturnAddr1;
+void *jmpFleshLipsBossDeathReturnAddr2;
 void* jmpToMariaFadeOutAddr;
 void* jmpWorkingPuzzleFadeOutFunction;
 
@@ -231,6 +235,33 @@ __declspec(naked) void __stdcall EddieBossDeathASM()
 	}
 }
 
+// Flesh Lips Boss Death ASM
+__declspec(naked) void __stdcall FleshLipsBossDeathASM()
+{
+	__asm {
+		mov al, byte ptr ds : [esi + 0x03]
+		cmp al, 0x02
+		je EnableBlur
+		cmp al, 0x04
+		je EnableBlur
+		jmp ExitASM
+
+	EnableBlur:
+		mov eax, dword ptr ds : [EnemiesRemainingAddr]
+		cmp dword ptr ds : [eax], 0x00
+		jnz ExitASM
+		call callEnMotionBlurAddr
+
+	ExitASM:
+		cmp byte ptr ds : [esi + 0x03], 0x02
+		jg ExitASM2
+		jmp jmpFleshLipsBossDeathReturnAddr1
+
+	ExitASM2:
+		jmp jmpFleshLipsBossDeathReturnAddr2
+	}
+}
+
 // Patch SH2 code to reenable special FX
 void PatchSpecialFX()
 {
@@ -289,6 +320,7 @@ void PatchSpecialFX()
 	}
 	memcpy(&callCustomMotionBlurAddr, (void*)(CustomMotionBlur2Ptr + 3), sizeof(DWORD));
 	callCustomMotionBlurAddr = (void*)(CustomMotionBlur2Ptr + 7 + (DWORD)callCustomMotionBlurAddr);
+	callEnMotionBlurAddr = (void*)(CustomMotionBlur5Ptr - 9);
 
 	// Get Maria Behind Jail Cell Motion Blur Correction addresses
 	constexpr BYTE SearchBytesMariaBehindJail[]{ 0x00, 0xDF, 0xE0, 0xF6, 0xC4, 0x05, 0x7A, 0x15, 0xD9, 0x05 };
@@ -327,6 +359,18 @@ void PatchSpecialFX()
 		Logging::Log() << __FUNCTION__ << " Error: failed to find memory address!";
 		return;
 	}
+
+	// Get Flesh Lips Boss Death address
+	constexpr BYTE SearchBytesFleshLipsBossDeath[]{ 0x80, 0x7E, 0x03, 0x02, 0x7F, 0x5C, 0x8B, 0x4E, 0x20 };
+	const DWORD FleshLipsBossDeathPtr = SearchAndGetAddresses(0x004B9EA5, 0x004BA155, 0x004B9A15, SearchBytesFleshLipsBossDeath, sizeof(SearchBytesFleshLipsBossDeath), 0x00, __FUNCTION__);
+	if (!FleshLipsBossDeathPtr)
+	{
+		Logging::Log() << __FUNCTION__ << " Error: failed to find memory address!";
+		return;
+	}
+	EnemiesRemainingAddr = (void*)*(DWORD*)(FleshLipsBossDeathPtr  - 0x1A);
+	jmpFleshLipsBossDeathReturnAddr1 = (void*)(FleshLipsBossDeathPtr + 6);
+	jmpFleshLipsBossDeathReturnAddr2 = (void*)(FleshLipsBossDeathPtr + 0x62);
 
 	// Get room ID address
 	GetRoomIDPointer();
@@ -424,6 +468,10 @@ void PatchSpecialFX()
 	// Write Eddie Boss Death Sequence address
 	WriteJMPtoMemory((BYTE*)EddieBossDeathPtr, *EddieBossDeathASM, 5);
 	
+	// Write Flesh Lips Boss Death Motion Blur Correction address
+	WriteJMPtoMemory((BYTE*)FleshLipsBossDeathPtr, *FleshLipsBossDeathASM, 6);
+	UpdateMemoryAddress((BYTE*)(FleshLipsBossDeathPtr - 0x14), "\x90\x90\x90\x90\x90", 5);
+
 	// Write CutSceme Fadeout Addr
 	WriteJMPtoMemory((BYTE*)MariaFadeOutFixAddr, *MariaCutsceneFadeoutASM, 5);
 
