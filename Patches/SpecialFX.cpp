@@ -262,6 +262,15 @@ __declspec(naked) void __stdcall FleshLipsBossDeathASM()
 	}
 }
 
+// Returns motion blend factor for cutscene after Flesh Lips boss fight
+__declspec(naked) void __stdcall FleshLipsBossCutsceneBlurFactorASM()
+{
+	__asm {
+		mov eax, dword ptr ds : [FleshLipsCutsceneMotionBlurFactor]
+		ret
+	}
+}
+
 // Patch SH2 code to reenable special FX
 void PatchSpecialFX()
 {
@@ -372,6 +381,24 @@ void PatchSpecialFX()
 	jmpFleshLipsBossDeathReturnAddr1 = (void*)(FleshLipsBossDeathPtr + 6);
 	jmpFleshLipsBossDeathReturnAddr2 = (void*)(FleshLipsBossDeathPtr + 0x62);
 
+	// Get Flesh Lips Post-Boss Cutscene address
+	constexpr BYTE SearchBytesFleshLipsBossCutscene[]{ 0x85, 0xC0, 0x74, 0x16, 0xD9, 0x05 };
+	const DWORD FleshLipsBossCutscenePtr = SearchAndGetAddresses(0x0058B831, 0x0058C0E1, 0x0058BA01, SearchBytesFleshLipsBossCutscene, sizeof(SearchBytesFleshLipsBossCutscene), 0x04, __FUNCTION__);
+	if (!FleshLipsBossCutscenePtr)
+	{
+		Logging::Log() << __FUNCTION__ << " Error: failed to find memory address!";
+		return;
+	}
+
+	// Get motion blur texture alpha correction address
+	constexpr BYTE SearchBytesMotionBlurTexAlpha[]{ 0x8B, 0x08, 0x6A, 0x01, 0x6A, 0x1B, 0xC1, 0xE5, 0x19 };
+	const DWORD MotionBlurTexAlphaPtr = SearchAndGetAddresses(0x00478AFB, 0x00478D9B, 0x00478FAB, SearchBytesMotionBlurTexAlpha, sizeof(SearchBytesMotionBlurTexAlpha), 0x0A, __FUNCTION__);
+	if (!MotionBlurTexAlphaPtr)
+	{
+		Logging::Log() << __FUNCTION__ << " Error: failed to find memory address!";
+		return;
+	}
+
 	// Get room ID address
 	GetRoomIDPointer();
 
@@ -471,6 +498,12 @@ void PatchSpecialFX()
 	// Write Flesh Lips Boss Death Motion Blur Correction address
 	WriteJMPtoMemory((BYTE*)FleshLipsBossDeathPtr, *FleshLipsBossDeathASM, 6);
 	UpdateMemoryAddress((BYTE*)(FleshLipsBossDeathPtr - 0x14), "\x90\x90\x90\x90\x90", 5);
+
+	// Write Flesh Lips Post-Boss Cutscene Motion Blur Correction address
+	WriteCalltoMemory((BYTE*)FleshLipsBossCutscenePtr, FleshLipsBossCutsceneBlurFactorASM, 11);
+
+	// Write motion blur texture alpha correction address
+	UpdateMemoryAddress((BYTE*)MotionBlurTexAlphaPtr, "\x8B", 1);
 
 	// Write CutSceme Fadeout Addr
 	WriteJMPtoMemory((BYTE*)MariaFadeOutFixAddr, *MariaCutsceneFadeoutASM, 5);
