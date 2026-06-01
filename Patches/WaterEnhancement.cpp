@@ -98,17 +98,17 @@ mov oD0, v5
 
 */
 DWORD g_WaterPondVSBytecode[] = {
-	0xfffe0101, 0x0009fffe, 0x58443344, 0x68532038,
-	0x72656461, 0x73734120, 0x6c626d65, 0x56207265,
-	0x69737265, 0x30206e6f, 0x0031392e, 0x00000014,
-	0x800f0000, 0x90e40000, 0xa0e40020, 0x00000001,
-	0xc00f0000, 0x80e40000, 0x00000005, 0x800f0001,
-	0x90a80000, 0xa0e4005c, 0x00000002, 0x800f0001,
-	0x80540001, 0xa054005e, 0x00000001, 0xe00f0000,
-	0x80e40001, 0x00000002, 0xe00f0001, 0x80e40001,
-	0xa0e4005a, 0x00000001, 0xe00f0002, 0x80e40000,
-	0x00000005, 0xe00f0003, 0x80e40001, 0xa0e4005b,
-	0x00000001, 0xd00f0000, 0x90e40005, 0x0000ffff
+    0xfffe0101, 0x0009fffe, 0x58443344, 0x68532038,
+    0x72656461, 0x73734120, 0x6c626d65, 0x56207265,
+    0x69737265, 0x30206e6f, 0x0031392e, 0x00000014,
+    0x800f0000, 0x90e40000, 0xa0e40020, 0x00000001,
+    0xc00f0000, 0x80e40000, 0x00000005, 0x800f0001,
+    0x90a80000, 0xa0e4005c, 0x00000002, 0x800f0001,
+    0x80540001, 0xa054005e, 0x00000001, 0xe00f0000,
+    0x80e40001, 0x00000002, 0xe00f0001, 0x80e40001,
+    0xa0e4005a, 0x00000001, 0xe00f0002, 0x80e40000,
+    0x00000005, 0xe00f0003, 0x80e40001, 0xa0e4005b,
+    0x00000001, 0xd00f0000, 0x90e40005, 0x0000ffff
 };
 
 /*
@@ -410,14 +410,14 @@ static void GetWaterConstantsByRoom(D3DXVECTOR4& specMult, D3DXVECTOR4& specUvMu
             specUvMult = { water_spec_uv_mult_cemetery, water_spec_uv_mult_cemetery, water_spec_uv_mult_cemetery, water_spec_uv_mult_cemetery };
         }
         break;
-		// Lake
-		case R_TOWN_LAKE:
-		{
-			dudvScale = { 0.005f, 0.005f, 0.005f, 0.005f };
-			const float specMultOverride = water_spec_mult_cemetery;
-			specMult = { specMultOverride, specMultOverride, specMultOverride, 0.0f };
-			specUvMult = { water_spec_uv_mult_cemetery, water_spec_uv_mult_cemetery, water_spec_uv_mult_cemetery, water_spec_uv_mult_cemetery };
-		}
+        // Lake
+        case R_TOWN_LAKE:
+        {
+            dudvScale = { 0.005f, 0.005f, 0.005f, 0.005f };
+            const float specMultOverride = water_spec_mult_cemetery;
+            specMult = { specMultOverride, specMultOverride, specMultOverride, 0.0f };
+            specUvMult = { water_spec_uv_mult_cemetery, water_spec_uv_mult_cemetery, water_spec_uv_mult_cemetery, water_spec_uv_mult_cemetery };
+        }
         // Pyramidhead submerge
         case R_APT_W_STAIRCASE_N:
             specMult = { water_spec_mult_apt_staircase, water_spec_mult_apt_staircase, water_spec_mult_apt_staircase, 0.0f };
@@ -527,12 +527,12 @@ HRESULT DrawWaterEnhanced(bool needToGrabScreenForWater, int64_t inGameTimerMs, 
                 D3DXVECTOR4 worldDiv = { worldScale, worldScale, worldScale, worldScale };
                 Device->SetVertexShaderConstant(WATER_WORLD_VS_CB_SLOT, &worldDiv, 1);
 
-				if (roomID == R_TOWN_LAKE) {
-					D3DXMATRIX transform;
-					Device->GetTransform(D3DTS_WORLDMATRIX(0), &transform);
-					D3DXVECTOR4 uvOffset = { transform.m[3][0] * worldScale, transform.m[3][2] * worldScale, 0.0f, 0.0f };
-					Device->SetVertexShaderConstant(WATER_UVOFFS_VS_CB_SLOT, &uvOffset, 1);
-				}
+                if (roomID == R_TOWN_LAKE) {
+                    D3DXMATRIX transform;
+                    Device->GetTransform(D3DTS_WORLDMATRIX(0), &transform);
+                    D3DXVECTOR4 uvOffset = { transform.m[3][0] * worldScale, transform.m[3][2] * worldScale, 0.0f, 0.0f };
+                    Device->SetVertexShaderConstant(WATER_UVOFFS_VS_CB_SLOT, &uvOffset, 1);
+                }
 
                 D3DXVECTOR4 waterColour = { 0.32f, 0.32f, 0.32f, 0.35f };
                 Device->SetVertexShaderConstant(WATER_COLOUR_VS_CB_SLOT, &waterColour, 1);
@@ -593,35 +593,35 @@ void PatchWaterEnhancement()
         return;
     }
 
-	// Increase distance after which the lake water disappears when James leaves the hotel dock
-	constexpr BYTE SearchBytes[]{ 0x83, 0xC4, 0x10, 0xEB, 0x06, 0xC7, 0x07, 0x01, 0x00, 0x00, 0x00 };
-	DWORD LakeWaterCullDistZAddr = SearchAndGetAddresses(0x004D5768, 0x004D5A18, 0x004D52D8, SearchBytes, sizeof(SearchBytes), 0x11, __FUNCTION__);
-	if (!LakeWaterCullDistZAddr)
-	{
-		Logging::Log() << __FUNCTION__ << " Error: failed to find pointer address!";
-		WaterEnhancedRender = false;
-		return;
-	}
-	const float* LakeWaterCullDistZ = &kLakeWaterCullDistZ;
-	UpdateMemoryAddress((void*)LakeWaterCullDistZAddr, &LakeWaterCullDistZ, sizeof(float));
+    // Increase distance after which the lake water disappears when James leaves the hotel dock
+    constexpr BYTE SearchBytes[]{ 0x83, 0xC4, 0x10, 0xEB, 0x06, 0xC7, 0x07, 0x01, 0x00, 0x00, 0x00 };
+    DWORD LakeWaterCullDistZAddr = SearchAndGetAddresses(0x004D5768, 0x004D5A18, 0x004D52D8, SearchBytes, sizeof(SearchBytes), 0x11, __FUNCTION__);
+    if (!LakeWaterCullDistZAddr)
+    {
+        Logging::Log() << __FUNCTION__ << " Error: failed to find pointer address!";
+        WaterEnhancedRender = false;
+        return;
+    }
+    const float* LakeWaterCullDistZ = &kLakeWaterCullDistZ;
+    UpdateMemoryAddress((void*)LakeWaterCullDistZAddr, &LakeWaterCullDistZ, sizeof(float));
 }
 
 void CheckCemeteryWaterCulling()
 {
     if (!WaterEnhancedRender)
-		return;
+        return;
 
-	static bool cemeteryWaterCullingDisabled = false;
+    static bool cemeteryWaterCullingDisabled = false;
 
     if (!cemeteryWaterCullingDisabled && GetCutsceneID() == CS_ANGELA_CEMETERY)
     {
-		ReadMemoryAddress(g_cemeteryWaterPlaneCheckAddr, &g_cemeteryWaterPlaneCheckValue, sizeof(DWORD));
+        ReadMemoryAddress(g_cemeteryWaterPlaneCheckAddr, &g_cemeteryWaterPlaneCheckValue, sizeof(DWORD));
         UpdateMemoryAddress(g_cemeteryWaterPlaneCheckAddr, "\x00\x04\x00\x00", sizeof(DWORD));
         cemeteryWaterCullingDisabled = true;
-	}
+    }
     else if (cemeteryWaterCullingDisabled && GetCutsceneID() != CS_ANGELA_CEMETERY)
     {
         UpdateMemoryAddress(g_cemeteryWaterPlaneCheckAddr, &g_cemeteryWaterPlaneCheckValue, sizeof(DWORD));
         cemeteryWaterCullingDisabled = false;
-	}
+    }
 }
