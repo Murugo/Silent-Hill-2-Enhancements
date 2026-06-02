@@ -135,6 +135,7 @@
 	visit(Room312ShadowFix, true) \
 	visit(RoomLightingFix, true) \
 	visit(RowboatAnimationFix, true) \
+	visit(RowboatSpawnFix, true) \
 	visit(SetBlackPillarBoxes, true) \
 	visit(SetSixtyFPS, true) \
 	visit(SetSwapEffectUpgradeShim, false) \
@@ -289,6 +290,7 @@
 	visit(QuickSaveCancelFix) \
 	visit(ResX) \
 	visit(ResY) \
+	visit(RowboatSpawnFix) \
 	visit(ScaleWindowedResolution)\
 	visit(ScreenMode) \
 	visit(SetSwapEffectUpgradeShim) \
