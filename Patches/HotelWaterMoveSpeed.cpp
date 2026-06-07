@@ -41,12 +41,17 @@ void RunHotelWaterMoveSpeed()
         }
     }
 
-    if (GetRoomID() == R_HTL_ALT_ELEVATOR && CheckGameFlag(kEnteredFloodedHotelBasementGameFlag))
+    const DWORD RoomID = GetRoomID();
+    if (RoomID == R_HTL_ALT_ELEVATOR && CheckGameFlag(kEnteredFloodedHotelBasementGameFlag))
     {
         *EnableWaterMoveSpeed = 1;
     }
-    else if (GetRoomID() == R_HTL_ALT_EMPLOYEE_STAIRS)
+    else if (RoomID == R_HTL_ALT_EMPLOYEE_STAIRS)
     {
         *EnableWaterMoveSpeed = GetJamesPosY() > -100.0f ? 1 : 0;
+    }
+    else if (RoomID == R_STRANGE_AREA_2_B)
+    {
+        *EnableWaterMoveSpeed = GetJamesPosY() > -50.0f ? 1 : 0;
     }
 }
