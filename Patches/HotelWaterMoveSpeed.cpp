@@ -45,4 +45,8 @@ void RunHotelWaterMoveSpeed()
     {
         *EnableWaterMoveSpeed = 1;
     }
+    else if (GetRoomID() == R_HTL_ALT_EMPLOYEE_STAIRS)
+    {
+        *EnableWaterMoveSpeed = GetJamesPosY() > -100.0f ? 1 : 0;
+    }
 }
