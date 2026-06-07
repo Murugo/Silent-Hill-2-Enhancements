@@ -92,6 +92,7 @@
 	visit(HookWndProc, true) \
 	visit(HospitalChaseFix, true) \
 	visit(HotelWaterFix, true) \
+	visit(HotelWaterMoveSpeedFix, true) \
 	visit(ImproveStorageSupport, true) \
 	visit(IncreaseBlood, true) \
 	visit(IncreaseDrawDistance, true) \

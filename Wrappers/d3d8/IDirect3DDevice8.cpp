@@ -2650,6 +2650,12 @@ HRESULT m_IDirect3DDevice8::BeginScene()
 			RunHotelWater();
 		}
 
+		// Fixes James' movement speed in select flooded rooms
+		if (HotelWaterMoveSpeedFix)
+		{
+			RunHotelWaterMoveSpeed();
+		}
+
 		// Change James' spawn point after the cutscene ends
 		if (ChangeClosetSpawn)
 		{

@@ -223,6 +223,7 @@ copy /Y "$(ProjectDir)Resources\SH2EEsetup.exe" "$(TargetDir)" &gt;nul</Command>
     <ClCompile Include="Patches\FinalBossRoomFix.cpp" />
     <ClCompile Include="Patches\FireEscapeKey.cpp" />
     <ClCompile Include="Patches\HoldToStomp.cpp" />
+    <ClCompile Include="Patches\HotelWaterMoveSpeed.cpp" />
     <ClCompile Include="Patches\InputTweaks.cpp" />
     <ClCompile Include="Patches\FMVPatches.cpp" />
     <ClCompile Include="Patches\HoldDamage.cpp" />
