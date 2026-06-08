@@ -50,4 +50,8 @@ void RunWaterMoveSpeed()
     {
         *EnableWaterMoveSpeed = GetJamesPosY() > -100.0f ? 1 : 0;
     }
+    else if (RoomID == R_STRANGE_AREA_2_B)
+    {
+        *EnableWaterMoveSpeed = GetJamesPosY() > -50.0f ? 1 : 0;
+    }
 }
