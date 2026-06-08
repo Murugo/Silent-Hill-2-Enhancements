@@ -610,6 +610,7 @@ WEAPONTYPE GetWeaponRender();
 WEAPONTYPE* GetWeaponHandGripPointer();
 WEAPONTYPE GetWeaponHandGrip();
 BYTE* GetInGameVoiceEvent();
+BYTE* GetGameFlagPointer();
 
 // Function patch declaration
 void CheckArgumentsForPID();
@@ -786,6 +787,7 @@ void RunSaveBGImage();
 void RunShadowCutscene();
 void RunSpecialFXScale(DWORD Height);
 void RunTreeColor();
+void RunWaterMoveSpeed();
 
 int GetNewScreenMode();
 
@@ -796,6 +798,8 @@ float GetConditionalFlashlightBrightnessGreen();
 float GetConditionalFlashlightBrightnessBlue();
 void CheckLakeMoonSize();
 void CheckRoom312Flashlight();
+
+bool CheckGameFlag(int flag);
 
 // Define the template function declaration
 template<typename T>

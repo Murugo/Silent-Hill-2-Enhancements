@@ -155,6 +155,7 @@
 	visit(UsePS2LowResTextures, false) \
 	visit(VHSAudioFix, false) \
 	visit(WaterEnhancedRender, true) \
+	visit(WaterMoveSpeedFix, true) \
 	visit(WhiteShaderFix, true) \
 	visit(WidescreenFix, true) \
 	visit(WndModeBorder, true) \
