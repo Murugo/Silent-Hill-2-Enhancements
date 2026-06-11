@@ -16,25 +16,58 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
+#include <algorithm>
 #include "Patches.h"
 #include "Common\Utils.h"
 #include "Logging\Logging.h"
 
 namespace {
     constexpr int kEnteredFloodedHotelBasementGameFlag = 0x1F6;
+
+    // Variables for ASM
+    static float WaterSpeedFactor = 1.0f;
+
+    __declspec(naked) void __stdcall SetWaterMoveSpeedASM()
+    {
+        __asm
+        {
+            fmul dword ptr ds : [WaterSpeedFactor]
+            ret
+        }
+    }
+}
+
+// Uses interpolated speed multipler to adjust James' speed in water
+void PatchWaterMoveSpeed()
+{
+    constexpr BYTE SearchBytes2D[]{ 0x8B, 0x86, 0xB0, 0x00, 0x00, 0x00, 0x89, 0x46, 0x40, 0x83, 0xC4, 0x04 };
+    BYTE* SetWaterMoveSpeed2DAddr = (BYTE*)SearchAndGetAddresses(0x0054923E, 0x0054956E, 0x00548E8E, SearchBytes2D, sizeof(SearchBytes2D), -0x26C, __FUNCTION__);
+
+    constexpr BYTE SearchBytes3D[]{ 0xD8, 0x8E, 0xAC, 0x00, 0x00, 0x00, 0x8B, 0x8E, 0xB0, 0x00, 0x00, 0x00 };
+    BYTE* SetWaterMoveSpeed3DAddr = (BYTE*)SearchAndGetAddresses(0x0054F3B0, 0x0054F6E0, 0x0054F000, SearchBytes3D, sizeof(SearchBytes3D), -0xBE, __FUNCTION__);
+
+    if (!SetWaterMoveSpeed2DAddr || !SetWaterMoveSpeed3DAddr)
+    {
+        Logging::Log() << __FUNCTION__ << " Error: failed to find memory address!";
+        return;
+    }
+
+    Logging::Log() << "Patching Water Move Speed Fix...";
+    WriteCalltoMemory(SetWaterMoveSpeed2DAddr, *SetWaterMoveSpeedASM, 0x06);
+    WriteCalltoMemory(SetWaterMoveSpeed3DAddr, *SetWaterMoveSpeedASM, 0x06);
 }
 
 // Fixes James' movement speed in certain flooded rooms
 void RunWaterMoveSpeed()
 {
-    static BYTE* EnableWaterMoveSpeed = nullptr;
-    if (!EnableWaterMoveSpeed)
+    static BYTE* PlayerInWaterPtr = nullptr;
+    if (!PlayerInWaterPtr)
     {
         RUNONCE();
 
         constexpr BYTE SearchBytes[]{ 0x83, 0xC8, 0xFF, 0x83, 0xF8, 0xFF, 0x0F, 0x95, 0xC1, 0xC6, 0x05 };
-        EnableWaterMoveSpeed = (BYTE*)ReadSearchedAddresses(0x005469ED, 0x00546D1D, 0x0054663D, SearchBytes, sizeof(SearchBytes), 0x0B, __FUNCTION__);
-        if (!EnableWaterMoveSpeed)
+        PlayerInWaterPtr = (BYTE*)ReadSearchedAddresses(0x005469ED, 0x00546D1D, 0x0054663D, SearchBytes, sizeof(SearchBytes), 0x0B, __FUNCTION__);
+        if (!PlayerInWaterPtr)
         {
             Logging::Log() << __FUNCTION__ << " Error: failed to find memory address!";
             return;
@@ -44,14 +77,19 @@ void RunWaterMoveSpeed()
     const DWORD RoomID = GetRoomID();
     if (RoomID == R_HTL_ALT_ELEVATOR && CheckGameFlag(kEnteredFloodedHotelBasementGameFlag))
     {
-        *EnableWaterMoveSpeed = 1;
+        *PlayerInWaterPtr = 1;
+        WaterSpeedFactor = 0.65f;
     }
     else if (GetRoomID() == R_HTL_ALT_EMPLOYEE_STAIRS)
     {
-        *EnableWaterMoveSpeed = GetJamesPosY() > -100.0f ? 1 : 0;
+        const float JamesPosY = GetJamesPosY();
+        *PlayerInWaterPtr = JamesPosY > -300.0f ? 1 : 0;
+        WaterSpeedFactor = std::clamp(1.0f - (JamesPosY + 300.0f) / 250.0f * 0.35f, 0.65f, 1.0f);
     }
     else if (RoomID == R_STRANGE_AREA_2_B)
     {
-        *EnableWaterMoveSpeed = GetJamesPosY() > -50.0f ? 1 : 0;
+        const float JamesPosY = GetJamesPosY();
+        *PlayerInWaterPtr = JamesPosY > -250.0f ? 1 : 0;
+        WaterSpeedFactor = std::clamp(1.0f - (JamesPosY + 250.0f) / 200.0f * 0.35f, 0.65f, 1.0f);
     }
 }

@@ -730,6 +730,7 @@ void PatchTreeLighting();
 void PatchVHSAudio();
 void PatchUnusedAudio();
 void PatchWaterDrawOrderFix();
+void PatchWaterMoveSpeed();
 void PatchWindowIcon();
 void PatchWindowTitle();
 void PatchWoodsideMannequinState();

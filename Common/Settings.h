@@ -298,6 +298,7 @@
 	visit(SmallFontWidth) \
 	visit(SmokeFogFix) \
 	visit(SpaceSize) \
+	visit(WaterMoveSpeedFix) \
 	visit(water_spec_mult_apt_staircase) \
 	visit(water_spec_mult_strange_area) \
 	visit(water_spec_mult_labyrinth) \
