@@ -25,7 +25,7 @@ namespace {
     constexpr int kEnteredFloodedHotelBasementGameFlag = 0x1F6;
 
     // Variables for ASM
-    static float WaterSpeedFactor = 1.0f;
+    static float WaterSpeedFactor = 0.65f;
 
     __declspec(naked) void __stdcall SetWaterMoveSpeedASM()
     {
@@ -75,12 +75,7 @@ void RunWaterMoveSpeed()
     }
 
     const DWORD RoomID = GetRoomID();
-    if (RoomID == R_HTL_ALT_ELEVATOR && CheckGameFlag(kEnteredFloodedHotelBasementGameFlag))
-    {
-        *PlayerInWaterPtr = 1;
-        WaterSpeedFactor = 0.65f;
-    }
-    else if (GetRoomID() == R_HTL_ALT_EMPLOYEE_STAIRS)
+    if (GetRoomID() == R_HTL_ALT_EMPLOYEE_STAIRS)
     {
         const float JamesPosY = GetJamesPosY();
         *PlayerInWaterPtr = JamesPosY > -300.0f ? 1 : 0;
@@ -91,5 +86,13 @@ void RunWaterMoveSpeed()
         const float JamesPosY = GetJamesPosY();
         *PlayerInWaterPtr = JamesPosY > -250.0f ? 1 : 0;
         WaterSpeedFactor = std::clamp(1.0f - (JamesPosY + 250.0f) / 200.0f * 0.35f, 0.65f, 1.0f);
+    }
+    else
+    {
+        WaterSpeedFactor = 0.65f;
+        if (RoomID == R_HTL_ALT_ELEVATOR && CheckGameFlag(kEnteredFloodedHotelBasementGameFlag))
+        {
+            *PlayerInWaterPtr = 1;
+        }
     }
 }
