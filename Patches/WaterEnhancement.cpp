@@ -165,24 +165,24 @@ DWORD g_WaterPSBytecode[] = {
     0x69737265, 0x30206e6f, 0x0031392e, 0x00000051,
     0xa00f0000, 0x3f000000, 0x3f000000, 0x3f800000,
     0x3f800000, 0x00000051, 0xa00f0001, 0x3f000000,
-    0xbf000000, 0x3f800000, 0x3f800000, 0x00000040, 
-    0x80030003, 0xbaf40002, 0x00000040, 0x80070004, 
-    0xb0e40000, 0x00000040, 0x80070005, 0xb0e40003, 
-    0x00000042, 0x800f0002, 0xb0e40001, 0x00000005, 
-    0x800f0001, 0xa0e40004, 0x84e40002, 0x00000001, 
-    0x800c0003, 0xa0e40000, 0x00000001, 0x800c0004, 
-    0xa0e40000, 0x00000001, 0x800c0005, 0xa0e40000, 
-    0x00000004, 0x800f0003, 0x80e40003, 0xa0e40001, 
-    0xa0e40000, 0x00000002, 0x800f0003, 0x80e40003, 
-    0x80e40001, 0x00000004, 0x800f0005, 0x84e40002, 
-    0xa0e40005, 0x80e40005, 0x00000002, 0x800f0002, 
-    0x80e40004, 0x80e40001, 0x0000fffd, 0x00000042, 
-    0x800f0000, 0x80e40002, 0x00000042, 0x800f0001, 
-    0x80e40003, 0x00000042, 0x800f0003, 0x80e40005, 
-    0x00000005, 0x800f0000, 0x80e40000, 0x90e40000, 
-    0x00000012, 0x801f0000, 0x80ff0000, 0x80e40000, 
-    0x80e40001, 0x00000004, 0x801f0000, 0x80e40003, 
-    0xa0e40006, 0x80e40000, 0x00000001, 0x80080000, 
+    0xbf000000, 0x3f800000, 0x3f800000, 0x00000040,
+    0x80030003, 0xbaf40002, 0x00000040, 0x80070004,
+    0xb0e40000, 0x00000040, 0x80070005, 0xb0e40003,
+    0x00000042, 0x800f0002, 0xb0e40001, 0x00000005,
+    0x800f0001, 0xa0e40004, 0x84e40002, 0x00000001,
+    0x800c0003, 0xa0e40000, 0x00000001, 0x800c0004,
+    0xa0e40000, 0x00000001, 0x800c0005, 0xa0e40000,
+    0x00000004, 0x800f0003, 0x80e40003, 0xa0e40001,
+    0xa0e40000, 0x00000002, 0x800f0003, 0x80e40003,
+    0x80e40001, 0x00000004, 0x800f0005, 0x84e40002,
+    0xa0e40005, 0x80e40005, 0x00000002, 0x800f0002,
+    0x80e40004, 0x80e40001, 0x0000fffd, 0x00000042,
+    0x800f0000, 0x80e40002, 0x00000042, 0x800f0001,
+    0x80e40003, 0x00000042, 0x800f0003, 0x80e40005,
+    0x00000005, 0x800f0000, 0x80e40000, 0x90e40000,
+    0x00000012, 0x801f0000, 0x80ff0000, 0x80e40000,
+    0x80e40001, 0x00000004, 0x801f0000, 0x80e40003,
+    0xa0e40006, 0x80e40000, 0x00000001, 0x80080000,
     0xa0e40000, 0x0000ffff
 };
 
@@ -331,8 +331,8 @@ static void LoadWaterUtilityTextures(LPDIRECT3DDEVICE8 Device) {
     }
 }
 
-static float GetFracPart(float f) {
-    return f - std::floorf(f);
+static double GetFracPart(double f) {
+    return f - std::floor(f);
 }
 
 static void SaveTextureStates(LPDIRECT3DDEVICE8 Device, const DWORD stage, DWORD* saveTo) {
@@ -358,41 +358,41 @@ static bool CheckWaterPrimitivesCountByRoom(const UINT PrimitiveCount) {
 
     switch (roomID) {
         // Pond
-        case R_FOREST_CEMETERY:
-            isWater = (PrimitiveCount == 102u);
+    case R_FOREST_CEMETERY:
+        isWater = (PrimitiveCount == 102u);
         break;
         // Lake
-        case R_TOWN_LAKE:
-            isWater = (PrimitiveCount == 68u);
+    case R_TOWN_LAKE:
+        isWater = (PrimitiveCount == 68u);
         break;
         // Pyramidhead submerge
-        case R_APT_W_STAIRCASE_N:
-            isWater = (PrimitiveCount == 38u);
+    case R_APT_W_STAIRCASE_N:
+        isWater = (PrimitiveCount == 38u);
         break;
         // Strange Area 2
-        case R_STRANGE_AREA_2_B:
-            isWater = (PrimitiveCount == 60u || PrimitiveCount == 32u || PrimitiveCount == 12u);
+    case R_STRANGE_AREA_2_B:
+        isWater = (PrimitiveCount == 60u || PrimitiveCount == 32u || PrimitiveCount == 12u);
         break;
         // Labyrinth West
-        case R_LAB_BOTTOM_C:
-        case R_LAB_BOTTOM_E:
-        case R_LAB_BOTTOM_F:
-        case R_LAB_BOTTOM_G:
-        case R_LAB_BOTTOM_H:
-        case R_LAB_BOTTOM_I:
-            isWater = (PrimitiveCount <= 46u && PrimitiveCount >= 10u);
+    case R_LAB_BOTTOM_C:
+    case R_LAB_BOTTOM_E:
+    case R_LAB_BOTTOM_F:
+    case R_LAB_BOTTOM_G:
+    case R_LAB_BOTTOM_H:
+    case R_LAB_BOTTOM_I:
+        isWater = (PrimitiveCount <= 46u && PrimitiveCount >= 10u);
         break;
         // Hotel Alternate Basement
-        case R_HTL_ALT_EMPLOYEE_STAIRS:
-        case R_HTL_ALT_BAR:
-        case R_HTL_ALT_BAR_KITCHEN:
-        case R_HTL_ALT_ELEVATOR:
-        case R_HTL_ALT_EMPLOYEE_HALL_BF:
-            isWater = (PrimitiveCount <= 82u && PrimitiveCount >= 16u);
+    case R_HTL_ALT_EMPLOYEE_STAIRS:
+    case R_HTL_ALT_BAR:
+    case R_HTL_ALT_BAR_KITCHEN:
+    case R_HTL_ALT_ELEVATOR:
+    case R_HTL_ALT_EMPLOYEE_HALL_BF:
+        isWater = (PrimitiveCount <= 82u && PrimitiveCount >= 16u);
         break;
         // Hotel Alternate 1F
-        case R_FINAL_BOSS_RM:
-            isWater = (PrimitiveCount == 56u);
+    case R_FINAL_BOSS_RM:
+        isWater = (PrimitiveCount == 56u);
         break;
     }
 
@@ -408,52 +408,52 @@ static void GetWaterConstantsByRoom(D3DXVECTOR4& specMult, D3DXVECTOR4& specUvMu
 
     switch (roomID) {
         // Pond
-        case R_FOREST_CEMETERY:
-        {
-            dudvScale = { 0.005f, 0.005f, 0.005f, 0.005f };
-            const float specMultOverride = (GetCutsceneID() == CS_END_LEAVE_LETTER) ? 0.075f : water_spec_mult_cemetery;
-            specMult = { specMultOverride, specMultOverride, specMultOverride, 0.0f };
-            specUvMult = { water_spec_uv_mult_cemetery, water_spec_uv_mult_cemetery, water_spec_uv_mult_cemetery, water_spec_uv_mult_cemetery };
-        }
-        break;
-        // Lake
-        case R_TOWN_LAKE:
-        {
-            dudvScale = { 0.005f, 0.005f, 0.005f, 0.005f };
-            const float specMultOverride = water_spec_mult_cemetery;
-            specMult = { specMultOverride, specMultOverride, specMultOverride, 0.0f };
-            specUvMult = { water_spec_uv_mult_cemetery, water_spec_uv_mult_cemetery, water_spec_uv_mult_cemetery, water_spec_uv_mult_cemetery };
-        }
-        // Pyramidhead submerge
-        case R_APT_W_STAIRCASE_N:
-            specMult = { water_spec_mult_apt_staircase, water_spec_mult_apt_staircase, water_spec_mult_apt_staircase, 0.0f };
+    case R_FOREST_CEMETERY:
+    {
+        dudvScale = { 0.005f, 0.005f, 0.005f, 0.005f };
+        const float specMultOverride = (GetCutsceneID() == CS_END_LEAVE_LETTER) ? 0.075f : water_spec_mult_cemetery;
+        specMult = { specMultOverride, specMultOverride, specMultOverride, 0.0f };
+        specUvMult = { water_spec_uv_mult_cemetery, water_spec_uv_mult_cemetery, water_spec_uv_mult_cemetery, water_spec_uv_mult_cemetery };
+    }
+    break;
+    // Lake
+    case R_TOWN_LAKE:
+    {
+        dudvScale = { 0.005f, 0.005f, 0.005f, 0.005f };
+        const float specMultOverride = water_spec_mult_cemetery;
+        specMult = { specMultOverride, specMultOverride, specMultOverride, 0.0f };
+        specUvMult = { water_spec_uv_mult_cemetery, water_spec_uv_mult_cemetery, water_spec_uv_mult_cemetery, water_spec_uv_mult_cemetery };
+    }
+    // Pyramidhead submerge
+    case R_APT_W_STAIRCASE_N:
+        specMult = { water_spec_mult_apt_staircase, water_spec_mult_apt_staircase, water_spec_mult_apt_staircase, 0.0f };
         break;
         // Strange Area 2
-        case R_STRANGE_AREA_2_B:
-            specMult = { water_spec_mult_strange_area, water_spec_mult_strange_area, water_spec_mult_strange_area, 0.0f };
+    case R_STRANGE_AREA_2_B:
+        specMult = { water_spec_mult_strange_area, water_spec_mult_strange_area, water_spec_mult_strange_area, 0.0f };
         break;
         // Labyrinth West
-        case R_LAB_BOTTOM_C:
-        case R_LAB_BOTTOM_E:
-        case R_LAB_BOTTOM_F:
-        case R_LAB_BOTTOM_G:
-        case R_LAB_BOTTOM_H:
-        case R_LAB_BOTTOM_I:
-            specMult = { water_spec_mult_labyrinth, water_spec_mult_labyrinth, water_spec_mult_labyrinth, 0.0f };
+    case R_LAB_BOTTOM_C:
+    case R_LAB_BOTTOM_E:
+    case R_LAB_BOTTOM_F:
+    case R_LAB_BOTTOM_G:
+    case R_LAB_BOTTOM_H:
+    case R_LAB_BOTTOM_I:
+        specMult = { water_spec_mult_labyrinth, water_spec_mult_labyrinth, water_spec_mult_labyrinth, 0.0f };
         break;
         // Hotel Alternate Basement
-        case R_HTL_ALT_EMPLOYEE_STAIRS:
-        case R_HTL_ALT_BAR:
-        case R_HTL_ALT_BAR_KITCHEN:
-        case R_HTL_ALT_ELEVATOR:
-        case R_HTL_ALT_EMPLOYEE_HALL_BF:
+    case R_HTL_ALT_EMPLOYEE_STAIRS:
+    case R_HTL_ALT_BAR:
+    case R_HTL_ALT_BAR_KITCHEN:
+    case R_HTL_ALT_ELEVATOR:
+    case R_HTL_ALT_EMPLOYEE_HALL_BF:
         // Hotel Alternate 1F
-        case R_FINAL_BOSS_RM: {
-            specMult = { water_spec_mult_hotel, water_spec_mult_hotel, water_spec_mult_hotel, 0.0f };
-            specUvMult = { water_spec_uv_mult_hotel, water_spec_uv_mult_hotel, water_spec_uv_mult_hotel, water_spec_uv_mult_hotel };
-            const float f = water_spec_uv_mult_hotel * 0.02f;
-            dudvSpecScale = { f, f, f, f };
-        } break;
+    case R_FINAL_BOSS_RM: {
+        specMult = { water_spec_mult_hotel, water_spec_mult_hotel, water_spec_mult_hotel, 0.0f };
+        specUvMult = { water_spec_uv_mult_hotel, water_spec_uv_mult_hotel, water_spec_uv_mult_hotel, water_spec_uv_mult_hotel };
+        const float f = water_spec_uv_mult_hotel * 0.02f;
+        dudvSpecScale = { f, f, f, f };
+    } break;
     }
 }
 
@@ -485,7 +485,7 @@ HRESULT DrawWaterEnhanced(bool needToGrabScreenForWater, int64_t inGameTimerMs, 
             }
             LoadWaterUtilityTextures(Device);
 
-            const float fraction = GetFracPart(static_cast<float>(inGameTimerMs) * 0.00005f);
+            const float fraction = static_cast<float>(GetFracPart(static_cast<double>(inGameTimerMs) * 0.00005));
             const D3DXVECTOR4 uvAddition(fraction, fraction, fraction, fraction);
 
             D3DXVECTOR4 specMult;
