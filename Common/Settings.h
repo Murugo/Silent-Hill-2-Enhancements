@@ -209,14 +209,16 @@
 	visit(fog_layer2_density_mult, 1.4f) \
 	visit(LimitPerFrameFPS, 59.997f) \
 	visit(water_spec_mult_apt_staircase, 0.035f) \
-	visit(water_spec_mult_strange_area, 0.017f) \
-	visit(water_spec_mult_labyrinth, 0.017f) \
+	visit(water_spec_mult_cemetery, 0.15f) \
 	visit(water_spec_mult_hotel, 0.05f) \
-	visit(water_spec_uv_mult_hotel, 0.45f) \
-    visit(water_spec_mult_cemetery, 0.15f) \
+	visit(water_spec_mult_labyrinth, 0.017f) \
+	visit(water_spec_mult_lake, 0.15f) \
+	visit(water_spec_mult_strange_area, 0.017f) \
 	visit(water_spec_uv_mult_cemetery, 0.85f) \
-    visit(closet_replacement_model_hide_time, 359.5f) \
-    visit(closet_replacement_model_reveal_time, 1695.0f)
+	visit(water_spec_uv_mult_hotel, 0.45f) \
+	visit(water_spec_uv_mult_lake, 0.85f) \
+	visit(closet_replacement_model_hide_time, 359.5f) \
+	visit(closet_replacement_model_reveal_time, 1695.0f)
 
 #define VISIT_STR_SETTINGS(visit) \
 	visit(CustomModFolder, "") \
@@ -300,60 +302,62 @@
 	visit(SmokeFogFix) \
 	visit(SpaceSize) \
 	visit(water_spec_mult_apt_staircase) \
-	visit(water_spec_mult_strange_area) \
-	visit(water_spec_mult_labyrinth) \
+	visit(water_spec_mult_cemetery) \
 	visit(water_spec_mult_hotel) \
-	visit(water_spec_uv_mult_hotel) \
-    visit(water_spec_mult_cemetery) \
+	visit(water_spec_mult_labyrinth) \
+	visit(water_spec_mult_lake) \
+	visit(water_spec_mult_strange_area) \
 	visit(water_spec_uv_mult_cemetery) \
-    visit(closet_replacement_model_hide_time) \
-    visit(closet_replacement_model_reveal_time) \
+	visit(water_spec_uv_mult_hotel) \
+	visit(water_spec_uv_mult_lake) \
+	visit(closet_replacement_model_hide_time) \
+	visit(closet_replacement_model_reveal_time) \
 	visit(WrapperType)
 
 typedef enum _SCREENMODE {
-	WINDOWED = 1,
-	WINDOWED_FULLSCREEN = 2,
-	EXCLUSIVE_FULLSCREEN = 3,
+    WINDOWED = 1,
+    WINDOWED_FULLSCREEN = 2,
+    EXCLUSIVE_FULLSCREEN = 3,
 } SCREENMODE;
 
 typedef enum _FULLSCREENMEDIA {
-	DISABLE_MEDIA_CONTROL = 0,
-	FIT_MEDIA = 1,
-	FILL_MEDIA = 2,
-	AUTO_MEDIA_CONTROL = 3,
+    DISABLE_MEDIA_CONTROL = 0,
+    FIT_MEDIA = 1,
+    FILL_MEDIA = 2,
+    AUTO_MEDIA_CONTROL = 3,
 } FULLSCREENMEDIA;
 
 typedef enum _FRONTBUFFERCONTROL {
-	AUTO_BUFFER = 0,
-	BUFFER_FROM_GDI = 1,
-	BUFFER_FROM_DIRECTX = 2,
+    AUTO_BUFFER = 0,
+    BUFFER_FROM_GDI = 1,
+    BUFFER_FROM_DIRECTX = 2,
 } FRONTBUFFERCONTROL;
 
 typedef enum _CRTSHADER {
-	CRT_SHADER_DISABLED = 0,
-	CRT_SHADER_ENABLED = 1,
-	CRT_SHADER_ENABLED_CURVATURE = 2,
+    CRT_SHADER_DISABLED = 0,
+    CRT_SHADER_ENABLED = 1,
+    CRT_SHADER_ENABLED_CURVATURE = 2,
 } CRTSHADER;
 
 typedef enum _REMOVEFORCEFEEDBACK {
-	DISABLE_FORCEFEEDBACK_CONTROL = 0,
-	AUTO_REMOVE_FORCEFEEDBACK = 1,
-	REMOVE_FORCEFEEDBACK = 2,
+    DISABLE_FORCEFEEDBACK_CONTROL = 0,
+    AUTO_REMOVE_FORCEFEEDBACK = 1,
+    REMOVE_FORCEFEEDBACK = 2,
 } REMOVEFORCEFEEDBACK;
 
 typedef enum _DPADCONTROL {
-	DISABLE_PDAD_CONTROL = 0,
-	DPAD_MOVEMENT_MODE = 1,
-	DPAD_HYBRID_MODE = 2,
-	DPAD_BUTTON_MODE = 3,
+    DISABLE_PDAD_CONTROL = 0,
+    DPAD_MOVEMENT_MODE = 1,
+    DPAD_HYBRID_MODE = 2,
+    DPAD_BUTTON_MODE = 3,
 } DPADCONTROL;
 
 typedef enum _BUTTONICONSSET {
-	BUTTON_ICONS_DISABLED = 0,
-	BUTTON_ICONS_GENERIC = 1,
-	BUTTON_ICONS_XBOX = 2,
-	BUTTON_ICONS_PLAYSTATION = 3,
-	BUTTON_ICONS_NINTENDO = 4,
+    BUTTON_ICONS_DISABLED = 0,
+    BUTTON_ICONS_GENERIC = 1,
+    BUTTON_ICONS_XBOX = 2,
+    BUTTON_ICONS_PLAYSTATION = 3,
+    BUTTON_ICONS_NINTENDO = 4,
 } BUTTONICONSSET;
 
 // Configurable setting defaults
@@ -381,12 +385,12 @@ typedef void(__stdcall* NV)(char* name, char* value, void* lpParam);
 
 struct CFGDATA
 {
-	DWORD Width = 0;
-	DWORD Height = 0;
-	DWORD VolumeLevel = 15;
-	DWORD HealthIndicatorOption = 1;
-	DWORD DisplayModeOption = 0;
-	DWORD ScaleWindowedResolutionOption = 0;
+    DWORD Width = 0;
+    DWORD Height = 0;
+    DWORD VolumeLevel = 15;
+    DWORD HealthIndicatorOption = 1;
+    DWORD DisplayModeOption = 0;
+    DWORD ScaleWindowedResolutionOption = 0;
 };
 
 extern HMODULE m_hModule;
