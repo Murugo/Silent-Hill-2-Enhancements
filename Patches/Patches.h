@@ -797,6 +797,7 @@ float GetConditionalFlashlightBrightnessGreen();
 float GetConditionalFlashlightBrightnessBlue();
 void CheckLakeMoonSize();
 void CheckRoom312Flashlight();
+void UpdateExteriorWaterVertexColors();
 
 // Define the template function declaration
 template<typename T>
