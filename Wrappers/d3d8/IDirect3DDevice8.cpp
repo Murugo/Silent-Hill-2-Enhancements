@@ -2163,7 +2163,7 @@ HRESULT m_IDirect3DDevice8::DrawPrimitive(D3DPRIMITIVETYPE PrimitiveType, UINT S
         }
     }
 
-    if (WaterEnhancedRender && PrimitiveType == D3DPT_TRIANGLESTRIP && GetCutsceneID() == CS_END_REBIRTH_EPILOGUE)
+    if (WaterEnhancedRender && PrimitiveType == D3DPT_TRIANGLESTRIP)
     {
         LPDIRECT3DSURFACE8 backBufferSurface = nullptr;
         if (SUCCEEDED(ProxyInterface->GetRenderTarget(&backBufferSurface)))
