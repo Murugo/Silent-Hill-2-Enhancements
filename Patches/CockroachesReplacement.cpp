@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include "Wrappers/d3d8/DirectX81SDK/include/d3d8.h"
 #include "Patches.h"
+#include "Patches/ModelId.h"
 #include "Common/ModelGLTF.h"
 #include "Common/FileSystemHooks.h"
 
@@ -133,7 +134,7 @@ HRESULT DrawCockroachesReplacement_DP(LPDIRECT3DDEVICE8 ProxyInterface, D3DPRIMI
 
     if (roomID == R_BUG_RM) {
         if (PrimitiveType == D3DPT_TRIANGLELIST && StartVertex == 0) {
-            if (PrimitiveCount == 256 || PrimitiveCount == 160) { // ty3 bug limbs
+            if (GetModelID() == ModelID::chr_item_ty3) {
                 result = S_OK;
             } else if (PrimitiveCount == 96) { // ty2 bug limbs
                 IUnknownPtr<IDirect3DTexture8> texture;
